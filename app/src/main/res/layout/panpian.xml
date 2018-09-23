@@ -30,11 +30,13 @@
             android:background="@drawable/game_disc">
 
             <ImageView
+                android:id="@+id/round"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/game_disc_light"/>
 
             <ImageButton
+                android:id="@+id/btn_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -43,6 +45,7 @@
         </FrameLayout>
 
         <ImageView
+            android:id="@+id/panpian_bar"
             android:layout_width="25dp"
             android:layout_height="104dp"
             android:background="@drawable/index_pin"/>

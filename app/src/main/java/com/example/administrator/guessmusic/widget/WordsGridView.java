@@ -22,25 +22,38 @@ import java.util.Random;
 
 public class WordsGridView extends GridView {
 
+    private Context context;
+
     private IWordClickListener listener;
     public void setListener(IWordClickListener l){
         listener = l;
     }
 
     public void setAllWorsList(List<WordButton> allWorsList) {
+        Log.i("gejun","set DATA");
         this.allWorsList = allWorsList;
+        if(!mFirstInit){
+            setAdapter(adapter);
+        } else {
+            mFirstInit = false;
+        }
     }
 
     private List<WordButton> allWorsList = new ArrayList<WordButton>();
 
     public WordsGridView(Context context) {
         super(context);
+        this.context = context;
     }
+
+    private WordsAdapter adapter;
+    private boolean mFirstInit = true;
 
     public WordsGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        setAdapter(new WordsAdapter(context));
+        this.context = context;
+        adapter = new WordsAdapter(context);
+        setAdapter(adapter);
     }
 
     public WordsGridView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -56,39 +69,54 @@ public class WordsGridView extends GridView {
 
         @Override
         public int getCount() {
+            Log.i("gejun","getCount  = " + allWorsList.size());
             return allWorsList.size();
         }
 
         @Override
         public Object getItem(int i) {
+
             return allWorsList.get(i);
         }
 
         @Override
         public long getItemId(int i) {
+            Log.i("gejun","getItemId i = " + i);
             return i;
         }
 
         @Override
         public View getView(final int i, View view, ViewGroup viewGroup) {
+            Log.i("gejun","getview i = " + i);
+            ViewHolder viewHoler;
             if(view == null){
                 view = LayoutInflater.from(context).inflate(R.layout.word_layout, null);
-                Button btn = (Button)view.findViewById(R.id.word);
-                btn.setText(allWorsList.get(i).getText());
-                allWorsList.get(i).setIndex(i);
-                allWorsList.get(i).setBtn(btn);
-                btn.setOnClickListener(new OnClickListener() {
+                viewHoler = new ViewHolder();
+                viewHoler.mButton = (Button)view.findViewById(R.id.word);
+                viewHoler.mButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         listener.onClick(i);
                     }
                 });
+                view.setTag(viewHoler);
             } else {
-
+                viewHoler = (ViewHolder) view.getTag();
             }
+            viewHoler.mButton.setText(allWorsList.get(i).getText());
+            viewHoler.index = i;
+
+            allWorsList.get(i).setIndex(viewHoler.index);
+            allWorsList.get(i).setBtn(viewHoler.mButton);
+
             return view;
 
         }
+    }
+
+    public class ViewHolder{
+        public Button mButton;
+        public int index;
     }
 
 }

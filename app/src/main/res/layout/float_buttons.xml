@@ -11,6 +11,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/game_level_selector"/>
         <TextView
+            android:id="@+id/stage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
